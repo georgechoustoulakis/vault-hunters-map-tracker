@@ -1,0 +1,10 @@
+{
+  "name": "vault-hunters-map-tracker",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "initialize": " cd client && npm i && cd ../server && npm i",
+    "start-client": "cd client && npm start",
+    "start-server": "node server/index.js"
+  }
+}
