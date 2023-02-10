@@ -1,16 +1,19 @@
 import express from 'express';
 import * as http from "http";
 import * as WS from 'ws'
-import {ClientMessage} from "./ClientMessage";
+import {ClientCreatePlayer, ClientMessage} from "./ClientMessage";
 import {Room, VaultRoom, VaultSession} from "./VaultSession";
 import {
     ServerErrorMessage,
+    ServerInfoMessage,
     ServerMessage,
     ServerSessionDetails,
     ServerTokenMessage,
     ServerUpdateMessage
 } from "./ServerMessage";
 import {randomUUID} from "crypto";
+import {LocalStorage} from "node-localstorage";
+import {Player} from "./Player";
 
 const PORT = process.env.PORT || 3001;
 
@@ -22,8 +25,9 @@ const wss = new WS.Server<WS>({server});
 
 const sessions = new Map<string, VaultSession>();
 
-const players = new Map<string, string>();
-
+const storage = new LocalStorage('./storage');
+const players: Player[] = JSON.parse(storage.getItem('players') ?? '[]');
+console.log(players);
 
 wss.on('connection', (ws: WS) => {
     ws.on('message', (message: string) => {
@@ -41,7 +45,7 @@ wss.on('connection', (ws: WS) => {
 function handleClientMessage(ws: WS, message: ClientMessage) {
     switch (message.type) {
         case "create-player":
-            return createPlayer(ws, message.name);
+            return createPlayer(ws, message);
         case "create-session":
             return createSession(ws);
         case "session-details":
@@ -53,28 +57,40 @@ function handleClientMessage(ws: WS, message: ClientMessage) {
     }
 }
 
-function createPlayer(ws: WS, name: string) {
-    if (players.has(name)) {
+function createPlayer(ws: WS, message: ClientCreatePlayer) {
+    const existingPlayer = players.find((player) => player.name === message.name)
+    if (existingPlayer !== undefined) {
+        if (existingPlayer.token === message.token) {
+            return sendInfo(ws, 'Already Authenticated 🚀')
+        }
+        if (message.token !== '') {
+            return sendError(ws, 'Server was reset and your name is now taken. Clear cache and try again please.')
+        }
         return sendError(ws, 'This name is already taken.');
+    } else if (message.token !== '') {
+        addPlayer({name: message.name, token: message.token});
+        return sendInfo(ws, 'Server was reset, but was able to authenticate 🚀');
     }
     const token = randomUUID();
-    players.set(name, token);
-    const message: ServerTokenMessage = {
+    addPlayer({name: message.name, token});
+    const response: ServerTokenMessage = {
         type: 'token',
-        token
+        token: token
     };
-    sendMessage(ws, message);
-    sendMessage(ws, updateMessage());
+    sendMessage(ws, response);
+}
+
+function addPlayer(player: Player) {
+    players.push(player);
+    storage.setItem('players', JSON.stringify(players));
+    updateMessageToAll();
 }
 
 function createSession(ws: WS) {
     const session = new VaultSession();
     sessions.set(session.id, session);
     // notify all clients
-    const message = updateMessage();
-    wss.clients.forEach((ws: WS) => {
-        sendMessage(ws, message);
-    });
+    updateMessageToAll();
 }
 
 function requestSessionDetails(ws: WS, id: string) {
@@ -138,8 +154,15 @@ function updateMessage(): ServerUpdateMessage {
                 players: session.players
             }
         }),
-        players: [...players.keys()]
+        players: players.map((player) => player.name);
     }
+}
+
+function updateMessageToAll(): void {
+    const message = updateMessage();
+    wss.clients.forEach((ws: WS) => {
+        sendMessage(ws, message);
+    });
 }
 
 function sendMessage(ws: WS, message: ServerMessage) {
@@ -150,6 +173,14 @@ function sendError(ws: WS, error: string) {
     const message: ServerErrorMessage = {
         type: 'error',
         message: error
+    }
+    ws.send(JSON.stringify(message));
+}
+
+function sendInfo(ws: WS, text: string) {
+    const message: ServerInfoMessage = {
+        type: 'info',
+        message: text
     }
     ws.send(JSON.stringify(message));
 }

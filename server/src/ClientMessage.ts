@@ -7,6 +7,7 @@ interface AuthorizedClientMessage {
 export interface ClientCreatePlayer {
     type: 'create-player',
     name: string,
+    token: string
 }
 
 export interface ClientCreateSession extends AuthorizedClientMessage {

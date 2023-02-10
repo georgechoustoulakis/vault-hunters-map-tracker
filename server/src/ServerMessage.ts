@@ -1,4 +1,4 @@
-import {Player, Session, SessionInfo} from "./VaultSession";
+import {Session, SessionInfo} from "./VaultSession";
 
 
 export interface ServerTokenMessage {
@@ -11,14 +11,24 @@ export interface ServerErrorMessage {
     message: string;
 }
 
+export interface ServerInfoMessage {
+    type: 'info';
+    message: string;
+}
+
 export interface ServerUpdateMessage {
     type: 'update';
     sessions: SessionInfo[];
-    players: Player[]
+    players: string[]
 }
 
 export interface ServerSessionDetails extends Session {
     type: 'session-details';
 }
 
-export type ServerMessage = ServerUpdateMessage | ServerTokenMessage | ServerErrorMessage | ServerSessionDetails;
+export type ServerMessage =
+    ServerUpdateMessage
+    | ServerTokenMessage
+    | ServerInfoMessage
+    | ServerErrorMessage
+    | ServerSessionDetails;

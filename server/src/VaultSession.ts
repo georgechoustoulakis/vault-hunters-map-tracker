@@ -1,7 +1,5 @@
 import {randomUUID} from "crypto";
 
-export type Player = string;
-
 export interface Room {
     id: string;
     x: number;
@@ -16,7 +14,7 @@ export interface Room {
 export interface SessionInfo {
     readonly id: string;
     readonly time: Date;
-    players: Player[];
+    players: string[];
 }
 
 export interface Session extends SessionInfo {
@@ -41,5 +39,5 @@ export class VaultSession implements Session {
     readonly size = 21;
     readonly time = new Date();
     rooms: Room[] = [new VaultRoom(10, 10)];
-    players: Player[] = [];
+    players: string[] = [];
 }
