@@ -5,6 +5,6 @@
   "scripts": {
     "initialize": " cd client && npm i && cd ../server && npm i",
     "start-client": "cd client && npm start",
-    "start-server": "node server/index.js"
+    "start-server": "node server/src/index.ts"
   }
 }
