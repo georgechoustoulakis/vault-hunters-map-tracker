@@ -153,7 +153,7 @@ function updateMessage(): ServerUpdateMessage {
                 time: session.time,
                 players: session.players
             }
-        }),
+        }).reverse(),
         players: players.map((player) => player.name);
     }
 }
