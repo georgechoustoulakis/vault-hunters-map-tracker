@@ -21,8 +21,12 @@ export function SessionTable(props: SessionTableProps) {
                     const setCurrentSession = () => {
                         setSession(session.id)
                     }
+                    const creationDate = new Date(session.time);
+                    const expireTime = new Date(creationDate.getTime() + 25 * 60000)
+                    const expired = expireTime.getTime() < new Date().getTime();
                     return (
-                        <div className="row" key={index}>
+                        <div className="row" key={index}
+                             style={{backgroundColor: expired ? 'rgba(255, 0, 0, 0.3)' : 'rgba(0, 255, 0, 0.3)'}}>
                             <div className="col">{new Date(session.time).toISOString()}</div>
                             <div className="col">
                                 <button onClick={setCurrentSession}>Join Session</button>

@@ -106,6 +106,7 @@ function App() {
                 {token !== '' && currentSession === '' &&
                     <>
                         <button onClick={onCreateNewSession}>Create New Session</button>
+                        <br/>
                         <SessionTable sessions={sessions} setSession={setCurrentSession}/>
                     </>
 
