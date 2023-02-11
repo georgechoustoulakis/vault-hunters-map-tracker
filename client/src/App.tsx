@@ -6,7 +6,6 @@ import {ServerMessage} from '../../server/src/ServerMessage'
 import {Session, SessionInfo} from '../../server/src/VaultSession'
 import {SessionTable} from "./components/SessionTable";
 import {CurrentSessionView} from "./components/CurrentSessionView";
-import {PlayerLocation} from "../../server/src/Player";
 
 const WS_URL = 'ws://localhost:3001';
 
@@ -59,6 +58,15 @@ function App() {
                 break;
             case "session-details":
                 if (currentSession === message.id) {
+                    if (!message.players.find((playerLocation) => playerLocation.name === name)) {
+                        // Add player to starting position if he was not in the room.
+                        sendClientMessage({
+                            type: 'session-change-player-location',
+                            token,
+                            sessionId: currentSession,
+                            player: {name, x: 10, y: 10}
+                        })
+                    }
                     setCurrentSessionDetails(message)
                 }
         }
