@@ -2,16 +2,18 @@ import React from 'react';
 import {Room, Session} from '../../../server/src/VaultSession'
 import {ClientMessage} from '../../../server/src/ClientMessage'
 
+
 interface RoomProps {
     room: Room;
     sendMessage: (clientMessage: ClientMessage) => void;
     currentSession: Session;
-    token: string
+    token: string;
+    name: string;
     sessionId: string;
 }
 
 export function RoomComponent(props: RoomProps) {
-    const {room, sendMessage, currentSession, sessionId, token} = props;
+    const {room, sendMessage, currentSession, sessionId, token, name} = props;
 
 
     const onClickWest = () => {
@@ -26,8 +28,15 @@ export function RoomComponent(props: RoomProps) {
     const onClickSouth = () => {
         sendMessage({type: 'session-update-room', token, sessionId, room: {...room, south: !room.south}})
     }
+    const onClickCenter = () => {
+        sendMessage({type: 'session-change-player-location', token, sessionId, player: {name, x: room.x, y: room.y}})
+    }
 
     const isCenter = room.x === 10 && room.y === 10;
+
+    const isPlayer = !!currentSession.players.find((playerLocation) => {
+        return playerLocation.name === name && playerLocation.x === room.x && playerLocation.y === room.y;
+    });
 
     return (
         <>

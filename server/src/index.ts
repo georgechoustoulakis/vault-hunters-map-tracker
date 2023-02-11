@@ -151,7 +151,7 @@ function changePlayerLocation(ws: WS, message: ChangePlayerLocation) {
     if (!session) {
         return;
     }
-    session.players.filter((playerLocation) => playerLocation.name !== message.player.name);
+    session.players = session.players.filter((playerLocation) => playerLocation.name !== message.player.name);
     session.players.push(message.player);
     sendSessionDetailsToALl(ws, session);
 }

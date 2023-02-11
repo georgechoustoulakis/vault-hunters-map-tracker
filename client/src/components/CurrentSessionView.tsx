@@ -52,13 +52,15 @@ export function CurrentSessionView(props: CurrentSessionViewProps) {
                                                                            sendMessage={sendMessage}
                                                                            currentSession={currentSession}
                                                                            token={token}
+                                                                           name={name}
                                                                            sessionId={currentSession.id}/> :
                                                             <Empty x={xIndex}
                                                                    y={yIndex}
                                                                    sessionId={currentSession.id}
                                                                    sendMessage={sendMessage}
                                                                    grid={grid}
-                                                                   token={token}/>
+                                                                   token={token}
+                                                                   name={name}/>
                                                     }
 
                                                 </th>)

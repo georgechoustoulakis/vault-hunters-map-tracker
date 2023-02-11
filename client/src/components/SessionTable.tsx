@@ -25,7 +25,6 @@ export function SessionTable(props: SessionTableProps) {
                 <header>
                     <div className="col">Creation time</div>
                     <div className="col">Join</div>
-                    <div className="col">Players</div>
                 </header>
 
                 {sessions.map((session, index) => {
@@ -42,7 +41,6 @@ export function SessionTable(props: SessionTableProps) {
                             <div className="col">
                                 <button onClick={setCurrentSession}>Join Session</button>
                             </div>
-                            <div className="col"><span>{session.players}</span></div>
                         </div>)
                 })
                 }
