@@ -47,12 +47,12 @@ function App() {
             case "error":
                 return onError(message.message)
             case "token":
-                const name = (document.getElementById('name-input')! as HTMLInputElement).value;
-                const token = message.token;
-                localStorage.setItem(NAME_KEY, name);
-                localStorage.setItem(TOKEN_KEY, token);
-                setName(name);
-                setToken(token);
+                const newName = (document.getElementById('name-input')! as HTMLInputElement).value;
+                const newToken = message.token;
+                localStorage.setItem(NAME_KEY, newName);
+                localStorage.setItem(TOKEN_KEY, newToken);
+                setName(newName);
+                setToken(newToken);
                 break;
             case "update":
                 setSessions(message.sessions);
