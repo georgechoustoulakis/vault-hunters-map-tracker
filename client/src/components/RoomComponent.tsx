@@ -15,24 +15,24 @@ export function RoomComponent(props: RoomProps) {
 
 
     const onClickWest = () => {
-        sendMessage({type: 'session-update-room', token, sessionId, room: {...room, west: false}})
+        sendMessage({type: 'session-update-room', token, sessionId, room: {...room, west: !room.west}})
     }
     const onClickNorth = () => {
-        sendMessage({type: 'session-update-room', token, sessionId, room: {...room, north: false}})
+        sendMessage({type: 'session-update-room', token, sessionId, room: {...room, north: !room.north}})
     }
     const onClickEast = () => {
-        sendMessage({type: 'session-update-room', token, sessionId, room: {...room, east: false}})
+        sendMessage({type: 'session-update-room', token, sessionId, room: {...room, east: !room.east}})
     }
     const onClickSouth = () => {
-        sendMessage({type: 'session-update-room', token, sessionId, room: {...room, south: false}})
+        sendMessage({type: 'session-update-room', token, sessionId, room: {...room, south: !room.south}})
     }
 
-    const isCenter = room.x === 10 && room.y ===10;
+    const isCenter = room.x === 10 && room.y === 10;
 
     return (
         <>
             <div className="room-parent">
-                <div className="div1" style={{backgroundColor: isCenter? "indianred": 'sandybrown'}}></div>
+                <div className="div1" style={{backgroundColor: isCenter ? "indianred" : 'sandybrown'}}></div>
                 <div className="div2" style={room.west ? {backgroundColor: 'rosybrown'} : {}}
                      onClick={onClickWest}></div>
                 <div className="div3" style={room.north ? {backgroundColor: 'rosybrown'} : {}}
