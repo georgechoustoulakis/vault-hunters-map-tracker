@@ -30,7 +30,7 @@ export function CurrentSessionView(props: CurrentSessionViewProps) {
     return (
         <div style={{display: 'flex', flexDirection: 'column'}}>
             <button onClick={leaveSession} style={{width: '150px', height: '30px', alignSelf: 'center'}}>
-                Leave VaultRoom
+                Leave Vault Session
             </button>
             <TransformWrapper
                 initialScale={2}
@@ -50,7 +50,7 @@ export function CurrentSessionView(props: CurrentSessionViewProps) {
                                                         room !== undefined ?
                                                             <RoomComponent room={room}
                                                                            sendMessage={sendMessage}
-                                                                           players={currentSession.players}
+                                                                           currentSession={currentSession}
                                                                            token={token}
                                                                            sessionId={currentSession.id}/> :
                                                             <Empty x={xIndex}

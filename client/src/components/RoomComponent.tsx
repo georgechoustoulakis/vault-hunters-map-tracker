@@ -1,17 +1,17 @@
 import React from 'react';
-import {Room} from '../../../server/src/VaultSession'
+import {Room, Session} from '../../../server/src/VaultSession'
 import {ClientMessage} from '../../../server/src/ClientMessage'
 
 interface RoomProps {
     room: Room;
     sendMessage: (clientMessage: ClientMessage) => void;
-    players: string[]
+    currentSession: Session;
     token: string
     sessionId: string;
 }
 
 export function RoomComponent(props: RoomProps) {
-    const {room, sendMessage, players, sessionId, token} = props;
+    const {room, sendMessage, currentSession, sessionId, token} = props;
 
 
     const onClickWest = () => {

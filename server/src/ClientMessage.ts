@@ -1,4 +1,5 @@
 import {Room} from "./VaultSession";
+import {PlayerLocation} from "./Player";
 
 interface AuthorizedClientMessage {
     token: string,
@@ -32,9 +33,16 @@ export interface AddRoom extends AuthorizedClientMessage {
     y: number
 }
 
+export interface ChangePlayerLocation extends AuthorizedClientMessage {
+    type: 'session-change-player-location',
+    sessionId: string,
+    player: PlayerLocation
+}
+
 export type ClientMessage =
     ClientCreatePlayer
     | ClientCreateSession
     | ClientSessionDetails
     | ChangeRoom
-    | AddRoom;
+    | AddRoom
+    | ChangePlayerLocation;

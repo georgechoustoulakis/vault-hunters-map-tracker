@@ -19,7 +19,6 @@ export interface ServerInfoMessage {
 export interface ServerUpdateMessage {
     type: 'update';
     sessions: SessionInfo[];
-    players: string[]
 }
 
 export interface ServerSessionDetails extends Session {

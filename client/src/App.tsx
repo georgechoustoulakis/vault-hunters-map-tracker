@@ -6,6 +6,7 @@ import {ServerMessage} from '../../server/src/ServerMessage'
 import {Session, SessionInfo} from '../../server/src/VaultSession'
 import {SessionTable} from "./components/SessionTable";
 import {CurrentSessionView} from "./components/CurrentSessionView";
+import {PlayerLocation} from "../../server/src/Player";
 
 const WS_URL = 'ws://localhost:3001';
 
@@ -18,7 +19,6 @@ function App() {
     const [name, setName] = useState<string>(storedName);
     const [token, setToken] = useState<string>(storedToken);
     const [sessions, setSessions] = useState<SessionInfo[]>([]);
-    const [players, setPlayers] = useState<string[]>([]);
     const [currentSession, setCurrentSession] = useState<string | undefined>(undefined);
     const [currentSessionDetails, setCurrentSessionDetails] = useState<Session | undefined>(undefined);
     const {sendMessage, lastMessage, readyState} = useWebSocket(WS_URL);
@@ -55,7 +55,6 @@ function App() {
                 setToken(token);
                 break;
             case "update":
-                setPlayers(message.players);
                 setSessions(message.sessions);
                 break;
             case "session-details":

@@ -1,7 +1,7 @@
 import express from 'express';
 import * as http from "http";
 import * as WS from 'ws'
-import {ClientCreatePlayer, ClientMessage} from "./ClientMessage";
+import {ChangePlayerLocation, ClientCreatePlayer, ClientMessage} from "./ClientMessage";
 import {Room, VaultRoom, VaultSession} from "./VaultSession";
 import {
     ServerErrorMessage,
@@ -54,6 +54,8 @@ function handleClientMessage(ws: WS, message: ClientMessage) {
             return updateRoom(ws, message.sessionId, message.room);
         case "session-add-room":
             return addRoom(ws, message.sessionId, message.x, message.y);
+        case 'session-change-player-location':
+            return changePlayerLocation(ws, message)
     }
 }
 
@@ -144,6 +146,16 @@ function addRoom(ws: WS, sessionId: string, x: number, y: number) {
     sendSessionDetailsToALl(ws, session);
 }
 
+function changePlayerLocation(ws: WS, message: ChangePlayerLocation) {
+    const session = sessions.get(message.sessionId);
+    if (!session) {
+        return;
+    }
+    session.players.filter((playerLocation) => playerLocation.name !== message.player.name);
+    session.players.push(message.player);
+    sendSessionDetailsToALl(ws, session);
+}
+
 function updateMessage(): ServerUpdateMessage {
     return {
         type: 'update',
@@ -154,7 +166,6 @@ function updateMessage(): ServerUpdateMessage {
                 players: session.players
             }
         }).reverse(),
-        players: players.map((player) => player.name);
     }
 }
 

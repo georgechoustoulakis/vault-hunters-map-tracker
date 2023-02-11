@@ -1,4 +1,5 @@
 import {randomUUID} from "crypto";
+import {PlayerLocation} from "./Player";
 
 export interface Room {
     id: string;
@@ -14,12 +15,12 @@ export interface Room {
 export interface SessionInfo {
     readonly id: string;
     readonly time: Date;
-    players: string[];
 }
 
 export interface Session extends SessionInfo {
     readonly size: number;
     rooms: Room[];
+    players: PlayerLocation[]
 }
 
 export class VaultRoom implements Room {
@@ -39,5 +40,5 @@ export class VaultSession implements Session {
     readonly size = 21;
     readonly time = new Date();
     rooms: Room[] = [new VaultRoom(10, 10)];
-    players: string[] = [];
+    players: PlayerLocation[] = [];
 }
