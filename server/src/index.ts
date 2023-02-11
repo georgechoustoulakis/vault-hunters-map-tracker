@@ -14,6 +14,7 @@ import {
 import {randomUUID} from "crypto";
 import {LocalStorage} from "node-localstorage";
 import {Player} from "./Player";
+import path from "path";
 
 const PORT = process.env.PORT || 3001;
 
@@ -198,4 +199,12 @@ function sendInfo(ws: WS, text: string) {
 
 server.listen(PORT, () => {
     console.log(`⚡️[server]: Server is running at http://localhost:${PORT}`);
+});
+
+// Have Node serve the files for our built React app
+app.use(express.static(path.resolve(__dirname, '../../client/build')));
+
+// All other GET requests not handled before will return our React app
+app.get('*', (req, res) => {
+    res.sendFile(path.resolve(__dirname, '../../client/build', 'index.html'));
 });
