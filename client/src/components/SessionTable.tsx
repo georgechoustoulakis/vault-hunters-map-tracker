@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {SessionInfo} from '../../../server/src/VaultSession'
 
 interface SessionTableProps {
@@ -8,6 +8,17 @@ interface SessionTableProps {
 
 export function SessionTable(props: SessionTableProps) {
     const {sessions, setSession} = props;
+    const [_, setTime] = useState(new Date());
+
+    // re-render every second to update availabilities
+    useEffect(() => {
+        const interval = setInterval(() => {
+            setTime(new Date());
+        }, 1000);
+
+        return () => clearInterval(interval);
+    }, []);
+
     return (
         <div>
             <section id={'sessions-table'}>
