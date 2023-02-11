@@ -38,8 +38,6 @@ export function RoomComponent(props: RoomProps) {
 
     const isPlayer = playerInThisRoom.find((playerLocation) => playerLocation.name === name)
 
-    const hasOtherPlayer = isPlayer ? playerInThisRoom.length > 1 : playerInThisRoom.length > 0;
-
     return (
         <>
             <div className="room-parent">
@@ -49,7 +47,11 @@ export function RoomComponent(props: RoomProps) {
                          borderStyle: isPlayer ? 'solid' : 'none'
                      }}
                      onClick={onClickCenter}>
-                    {hasOtherPlayer && <span className="dot"></span>}
+                    {playerInThisRoom.length > 0 && <span className="dot">
+                        <span className={'dotText'}>
+                            {playerInThisRoom.length}
+                        </span>
+                    </span>}
 
                 </div>
                 <div className="div2" style={room.west ? {backgroundColor: 'rosybrown'} : {}}

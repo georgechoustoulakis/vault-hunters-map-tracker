@@ -126,9 +126,13 @@ section .col {
 }
 
 .dot {
-    display: block;
+    display: flex;
     height: 100%;
     width: 100%;
-    background-color: white;
-    border-radius: 50%;
+    /*background-color: white;*/
+    /*border-radius: 50%;*/
+    color: black;
+    font-size: 1vmin;
+    align-items: center;
+    justify-content: center;
 }
