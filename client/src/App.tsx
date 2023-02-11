@@ -1,8 +1,10 @@
 import React, {useEffect, useState} from 'react';
 import './App.css';
 import useWebSocket, {ReadyState} from 'react-use-websocket';
-import {ClientCreatePlayer} from '../../server/src/ClientMessage'
+import {ClientMessage} from '../../server/src/ClientMessage'
 import {ServerMessage} from '../../server/src/ServerMessage'
+import {SessionInfo} from '../../server/src/VaultSession'
+import {SessionTable} from "./components/SessionTable";
 
 const WS_URL = 'ws://localhost:3001';
 
@@ -14,6 +16,9 @@ const storedName = localStorage.getItem(NAME_KEY) ?? '';
 function App() {
     const [name, setName] = useState<string>(storedName);
     const [token, setToken] = useState<string>(storedToken);
+    const [sessions, setSessions] = useState<SessionInfo[]>([]);
+    const [players, setPlayers] = useState<string[]>([]);
+    const [currentSession, setCurrentSession] = useState<string>('');
     const {sendMessage, lastMessage, readyState} = useWebSocket(WS_URL);
 
     useEffect(() => {
@@ -46,10 +51,14 @@ function App() {
                 localStorage.setItem(TOKEN_KEY, token);
                 setName(name);
                 setToken(token);
+                break;
+            case "update":
+                setPlayers(message.players);
+                setSessions(message.sessions);
         }
     }
 
-    const sendClientMessage = (message: ClientCreatePlayer) => {
+    const sendClientMessage = (message: ClientMessage) => {
         console.log(message);
         sendMessage(JSON.stringify(message));
     }
@@ -67,6 +76,10 @@ function App() {
         }
     }
 
+    const onCreateNewSession = () => {
+        sendClientMessage({type: 'create-session', token: token});
+    }
+
     const connectionStatus = {
         [ReadyState.CONNECTING]: 'Connecting',
         [ReadyState.OPEN]: 'Open',
@@ -80,21 +93,23 @@ function App() {
         <div className="App">
             <header className="App-header">
                 {token === '' &&
-                    <div className="top-header">
+                    <div className="login-div">
                         <label>Enter your name:</label>
                         <br/>
                         <input type="text" id='name-input'></input>
                         <br/>
-                        <button className="header-button" onClick={onSubmitName}>Enter</button>
+                        <button onClick={onSubmitName}>Enter</button>
                         <br/>
 
                     </div>}
-                {token !== '' &&
-                    <span>Successfully authenticated.</span>}
-                <br/>
-                <br/>
-                <br/>
-                <span>The WebSocket is currently {connectionStatus}</span>
+                {/* Session selection */}
+                {token !== '' && currentSession === '' &&
+                    <>
+                        <button onClick={onCreateNewSession}>Create New Session</button>
+                        <SessionTable sessions={sessions} setSession={setCurrentSession}/>
+                    </>
+
+                }
             </header>
         </div>
     );

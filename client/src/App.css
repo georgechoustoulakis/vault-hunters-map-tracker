@@ -36,3 +36,33 @@
     transform: rotate(360deg);
   }
 }
+
+#sessions-table {
+  display: table;
+  font-family: Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+section > * {
+  display: table-row;
+}
+
+section .col {
+  display: table-cell;
+}
+
+#sessions-table .col, #sessions-table header {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+
+#sessions-table .row:hover {background-color: #ddd1;}
+
+#sessions-table header {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: left;
+  background-color: #04AA6D;
+  color: white;
+}
