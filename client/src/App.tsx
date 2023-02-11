@@ -3,8 +3,9 @@ import './App.css';
 import useWebSocket, {ReadyState} from 'react-use-websocket';
 import {ClientMessage} from '../../server/src/ClientMessage'
 import {ServerMessage} from '../../server/src/ServerMessage'
-import {SessionInfo} from '../../server/src/VaultSession'
+import {Session, SessionInfo, VaultSession} from '../../server/src/VaultSession'
 import {SessionTable} from "./components/SessionTable";
+import {CurrentSessionView} from "./components/CurrentSessionView";
 
 const WS_URL = 'ws://localhost:3001';
 
@@ -18,7 +19,8 @@ function App() {
     const [token, setToken] = useState<string>(storedToken);
     const [sessions, setSessions] = useState<SessionInfo[]>([]);
     const [players, setPlayers] = useState<string[]>([]);
-    const [currentSession, setCurrentSession] = useState<string>('');
+    const [currentSession, setCurrentSession] = useState<string | undefined>(undefined);
+    const [currentSessionDetails, setCurrentSessionDetails] = useState<Session | undefined>(undefined);
     const {sendMessage, lastMessage, readyState} = useWebSocket(WS_URL);
 
     useEffect(() => {
@@ -55,6 +57,11 @@ function App() {
             case "update":
                 setPlayers(message.players);
                 setSessions(message.sessions);
+                break;
+            case "session-details":
+                if (currentSession === message.id) {
+                    setCurrentSessionDetails(message)
+                }
         }
     }
 
@@ -80,6 +87,16 @@ function App() {
         sendClientMessage({type: 'create-session', token: token});
     }
 
+    const leaveSession = () => {
+        setCurrentSession(undefined);
+        setCurrentSessionDetails(undefined)
+    }
+
+    const getSessionDetails = (sessionId: string) => {
+        setCurrentSession(sessionId);
+        sendClientMessage({type: 'session-details', token, sessionId});
+    }
+
     const connectionStatus = {
         [ReadyState.CONNECTING]: 'Connecting',
         [ReadyState.OPEN]: 'Open',
@@ -103,13 +120,16 @@ function App() {
 
                     </div>}
                 {/* Session selection */}
-                {token !== '' && currentSession === '' &&
+                {token !== '' && currentSession === undefined &&
                     <>
                         <button onClick={onCreateNewSession}>Create New Session</button>
                         <br/>
-                        <SessionTable sessions={sessions} setSession={setCurrentSession}/>
+                        <SessionTable sessions={sessions} setSession={getSessionDetails}/>
                     </>
 
+                }
+                {currentSession !== undefined && currentSessionDetails !== undefined &&
+                    <CurrentSessionView currentSession={currentSessionDetails} leaveSession={leaveSession}/>
                 }
             </header>
         </div>

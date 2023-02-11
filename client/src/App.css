@@ -65,3 +65,8 @@ section .col {
   text-align: left;
   color: white;
 }
+
+#room-table th {
+  height: 50px;
+  width: 50px;
+}
