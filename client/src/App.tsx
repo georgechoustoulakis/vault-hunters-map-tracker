@@ -3,7 +3,7 @@ import './App.css';
 import useWebSocket, {ReadyState} from 'react-use-websocket';
 import {ClientMessage} from '../../server/src/ClientMessage'
 import {ServerMessage} from '../../server/src/ServerMessage'
-import {Session, SessionInfo, VaultSession} from '../../server/src/VaultSession'
+import {Session, SessionInfo} from '../../server/src/VaultSession'
 import {SessionTable} from "./components/SessionTable";
 import {CurrentSessionView} from "./components/CurrentSessionView";
 
@@ -129,7 +129,12 @@ function App() {
 
                 }
                 {currentSession !== undefined && currentSessionDetails !== undefined &&
-                    <CurrentSessionView currentSession={currentSessionDetails} leaveSession={leaveSession}/>
+                    <CurrentSessionView
+                        currentSession={currentSessionDetails}
+                        leaveSession={leaveSession}
+                        sendMessage={sendClientMessage}
+                        token={token}
+                        name={name}/>
                 }
             </header>
         </div>

@@ -1,17 +1,23 @@
 import React from 'react';
 import {Room, Session} from '../../../server/src/VaultSession'
-import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch"
+import {ClientMessage} from '../../../server/src/ClientMessage'
+import {TransformComponent, TransformWrapper} from "react-zoom-pan-pinch"
+import {RoomComponent} from "./RoomComponent";
+import {Empty} from "./Empty";
 
 interface CurrentSessionViewProps {
     currentSession: Session;
     leaveSession: () => void;
+    sendMessage: (clientMessage: ClientMessage) => void;
+    token: string;
+    name: string;
 }
 
 export function CurrentSessionView(props: CurrentSessionViewProps) {
-    const {currentSession, leaveSession} = props;
+    const {currentSession, leaveSession, sendMessage, token, name} = props;
 
     const size = currentSession.size;
-    const grid: (Room| undefined)[][] = new Array(size);
+    const grid: (Room | undefined)[][] = new Array(size);
     for (let i = 0; i < size; i++) {
         grid[i] = new Array(size).fill(undefined);
     }
@@ -23,29 +29,37 @@ export function CurrentSessionView(props: CurrentSessionViewProps) {
     console.log(grid);
     return (
         <div style={{display: 'flex', flexDirection: 'column'}}>
-            <button onClick={leaveSession}>Leave</button>
-
-            <br/>
+            <button onClick={leaveSession} style={{width: '150px', height: '30px', alignSelf: 'center'}}>
+                Leave VaultRoom
+            </button>
             <TransformWrapper
                 initialScale={2}
-                initialPositionX={-(size*50)/2}
-                initialPositionY={-(size*50)/2}
-            >
-                {({ zoomIn, zoomOut, resetTransform, ...rest }) => (
+                initialPositionX={-450}
+                initialPositionY={-500}>
+                {({zoomIn, zoomOut, resetTransform, ...rest}) => (
                     <React.Fragment>
-                        <div className="tools">
-                            <button onClick={() => zoomIn()}>+</button>
-                            <button onClick={() => zoomOut()}>-</button>
-                            <button onClick={() => resetTransform()}>x</button>
-                        </div>
                         <TransformComponent>
-                            <table id={'room-table'}>
+                            <table id={'room-table'} style={{aspectRatio: 1, height: 'calc(100vh-30px)'}}>
                                 {
-                                    grid.map((row, index) => (
-                                        <tr key={index} className={'row'}>
-                                            {row.map((room, index) =>
+                                    grid.map((row, xIndex) => (
+                                        <tr key={xIndex} className={'row'}>
+                                            {row.map((room, yIndex) =>
 
-                                                <th key={index}>1
+                                                <th key={yIndex}>
+                                                    {
+                                                        room !== undefined ?
+                                                            <RoomComponent room={room}
+                                                                           sendMessage={sendMessage}
+                                                                           players={currentSession.players}
+                                                                           token={token}
+                                                                           sessionId={currentSession.id}/> :
+                                                            <Empty x={xIndex}
+                                                                   y={yIndex}
+                                                                   sessionId={currentSession.id}
+                                                                   sendMessage={sendMessage}
+                                                                   grid={grid}
+                                                                   token={token}/>
+                                                    }
 
                                                 </th>)
                                             }
