@@ -34,14 +34,24 @@ export function RoomComponent(props: RoomProps) {
 
     const isCenter = room.x === 10 && room.y === 10;
 
-    const isPlayer = !!currentSession.players.find((playerLocation) => {
-        return playerLocation.name === name && playerLocation.x === room.x && playerLocation.y === room.y;
-    });
+    const playerInThisRoom = currentSession.players.filter((playerLocation) => playerLocation.x === room.x && playerLocation.y === room.y)
+
+    const isPlayer = playerInThisRoom.find((playerLocation) => playerLocation.name === name)
+
+    const hasOtherPlayer = isPlayer ? playerInThisRoom.length > 1 : playerInThisRoom.length > 0;
 
     return (
         <>
             <div className="room-parent">
-                <div className="div1" style={{backgroundColor: isCenter ? "indianred" : 'sandybrown'}}></div>
+                <div className="div1"
+                     style={{
+                         backgroundColor: isCenter ? "indianred" : 'sandybrown',
+                         borderStyle: isPlayer ? 'solid' : 'none'
+                     }}
+                     onClick={onClickCenter}>
+                    {hasOtherPlayer && <span className="dot"></span>}
+
+                </div>
                 <div className="div2" style={room.west ? {backgroundColor: 'rosybrown'} : {}}
                      onClick={onClickWest}></div>
                 <div className="div3" style={room.north ? {backgroundColor: 'rosybrown'} : {}}
