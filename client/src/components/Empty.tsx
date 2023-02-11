@@ -19,13 +19,17 @@ export function Empty(props: EmptyProps) {
         ((y - 1) >= 0 && (grid[x][y - 1]?.east))
 
     const onClick = () => {
+        if (!clickable) {
+            return;
+        }
         sendMessage({type: 'session-add-room', sessionId, x, y, token})
     }
 
     return (
         <>
             <div className="room-parent">
-                <div className="div1" style={{backgroundColor: clickable ? 'gray' : '#282c34'}} onClick={onClick}></div>
+                <div className="div1" style={{backgroundColor: clickable ? 'dimgray' : '#282c34'}}
+                     onClick={onClick}></div>
                 <div className="div2"></div>
                 <div className="div3"></div>
                 <div className="div4"></div>
