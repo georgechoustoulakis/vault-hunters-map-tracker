@@ -26,7 +26,6 @@ export function CurrentSessionView(props: CurrentSessionViewProps) {
         grid[room.x][room.y] = room;
     }
 
-    console.log(grid);
     return (
         <div style={{display: 'flex', flexDirection: 'column'}}>
             <button onClick={leaveSession} style={{width: '150px', height: '30px', alignSelf: 'center'}}>
