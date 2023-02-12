@@ -1,7 +1,13 @@
 import express from 'express';
 import * as http from "http";
 import * as WS from 'ws'
-import {ChangePlayerLocation, ClientCreatePlayer, ClientMessage, ClientUpdateRoom} from "./common/ClientMessage";
+import {
+    ChangePlayerLocation,
+    ClientCreatePlayer,
+    ClientMessage,
+    ClientSessionDetails,
+    ClientUpdateRoom
+} from "./common/ClientMessage";
 import {
     ServerErrorMessage,
     ServerInfoMessage,
@@ -59,7 +65,7 @@ function handleClientMessage(ws: WS, message: ClientMessage) {
         case "create-session":
             return createSession(message.direction);
         case "session-details":
-            return requestSessionDetails(ws, message.sessionId);
+            return requestSessionDetails(ws, message);
         case "session-update-room":
             return updateRoom(ws, message.sessionId, message);
         case 'session-change-player-location':
@@ -121,10 +127,14 @@ function createSession(direction: CenterDirection) {
     updateMessageToAll();
 }
 
-function requestSessionDetails(ws: WS, id: string) {
-    const session = sessions.get(id);
+function requestSessionDetails(ws: WS, message: ClientSessionDetails) {
+    const session = sessions.get(message.sessionId);
     if (!session) {
         return;
+    }
+    const player = players.find((player) => player.token === message.token)!;
+    if (session.players.find((sessionPlayer) => sessionPlayer.name === player.name) === undefined) {
+        session.players.push({name: player.name, x: 10, y: 10});
     }
     sendSessionDetails(ws, session);
 }
@@ -181,6 +191,7 @@ function changePlayerLocation(ws: WS, message: ChangePlayerLocation) {
         return;
     }
     const room = session.grid[message.player.x][message.player.y];
+    console.log(room);
     if (room === RoomType.EMPTY) {
         return sendError(ws, 'Can\t move player into an empty void.');
     }
@@ -190,8 +201,11 @@ function changePlayerLocation(ws: WS, message: ChangePlayerLocation) {
         addAdjacentRooms(session, message.player.x, message.player.y);
         updateRoomConnections(session, message.player.x, message.player.y);
     }
+    console.log(message.player.name);
     session.players = session.players.filter((playerLocation) => playerLocation.name !== message.player.name);
+    console.log(message.player);
     session.players.push(message.player);
+    console.log(session.players);
 
     sendSessionDetailsToALl(ws, session);
 }

@@ -59,16 +59,7 @@ function App() {
                 break;
             case "session-details":
                 if (currentSession === message.id) {
-                    if (!message.players.find((playerLocation) => playerLocation.name === name)) {
-                        // Add player to starting position if he was not in the room.
-                        sendClientMessage({
-                            type: 'session-change-player-location',
-                            token,
-                            sessionId: currentSession,
-                            player: {name, x: 10, y: 10}
-                        })
-                    }
-                    setCurrentSessionDetails(message)
+                    setCurrentSessionDetails(message);
                 }
         }
     }
