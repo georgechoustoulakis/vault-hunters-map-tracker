@@ -1,4 +1,4 @@
-import {Session, SessionInfo} from "./VaultSession";
+import {SessionDetails, SessionInfo} from "./VaultSession";
 
 
 export interface ServerTokenMessage {
@@ -21,7 +21,7 @@ export interface ServerUpdateMessage {
     sessions: SessionInfo[];
 }
 
-export interface ServerSessionDetails extends Session {
+export interface ServerSessionDetails extends SessionDetails {
     type: 'session-details';
 }
 

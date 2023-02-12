@@ -1,12 +1,12 @@
 import React from 'react';
-import {Room, Session} from '../../../server/src/VaultSession'
+import {Room, SessionDetails} from '../../../server/src/VaultSession'
 import {ClientMessage} from '../../../server/src/ClientMessage'
 
 
 interface RoomProps {
     room: Room;
     sendMessage: (clientMessage: ClientMessage) => void;
-    currentSession: Session;
+    currentSession: SessionDetails;
     token: string;
     name: string;
     sessionId: string;

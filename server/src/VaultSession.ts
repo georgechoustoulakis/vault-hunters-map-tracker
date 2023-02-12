@@ -17,7 +17,7 @@ export interface SessionInfo {
     readonly time: Date;
 }
 
-export interface Session extends SessionInfo {
+export interface SessionDetails extends SessionInfo {
     readonly size: number;
     rooms: Room[];
     players: PlayerLocation[]
@@ -35,7 +35,7 @@ export class VaultRoom implements Room {
     west = true;
 }
 
-export class VaultSession implements Session {
+export class VaultSession implements SessionDetails {
     readonly id = randomUUID();
     readonly size = 21;
     readonly time = new Date();

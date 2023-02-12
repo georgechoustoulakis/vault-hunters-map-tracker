@@ -3,7 +3,7 @@ import './App.css';
 import useWebSocket, {ReadyState} from 'react-use-websocket';
 import {ClientMessage} from '../../server/src/ClientMessage'
 import {ServerMessage} from '../../server/src/ServerMessage'
-import {Session, SessionInfo} from '../../server/src/VaultSession'
+import {SessionDetails, SessionInfo} from '../../server/src/VaultSession'
 import {SessionTable} from "./components/SessionTable";
 import {CurrentSessionView} from "./components/CurrentSessionView";
 
@@ -19,7 +19,7 @@ function App() {
     const [token, setToken] = useState<string>(storedToken);
     const [sessions, setSessions] = useState<SessionInfo[]>([]);
     const [currentSession, setCurrentSession] = useState<string | undefined>(undefined);
-    const [currentSessionDetails, setCurrentSessionDetails] = useState<Session | undefined>(undefined);
+    const [currentSessionDetails, setCurrentSessionDetails] = useState<SessionDetails | undefined>(undefined);
     const {sendMessage, lastMessage, readyState} = useWebSocket(WS_URL);
 
     useEffect(() => {

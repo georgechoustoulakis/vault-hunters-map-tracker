@@ -1,12 +1,12 @@
 import React from 'react';
-import {Room, Session} from '../../../server/src/VaultSession'
+import {Room, SessionDetails} from '../../../server/src/VaultSession'
 import {ClientMessage} from '../../../server/src/ClientMessage'
 import {TransformComponent, TransformWrapper} from "react-zoom-pan-pinch"
 import {RoomComponent} from "./RoomComponent";
 import {Empty} from "./Empty";
 
 interface CurrentSessionViewProps {
-    currentSession: Session;
+    currentSession: SessionDetails;
     leaveSession: () => void;
     sendMessage: (clientMessage: ClientMessage) => void;
     token: string;
