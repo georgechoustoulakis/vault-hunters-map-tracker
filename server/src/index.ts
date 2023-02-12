@@ -149,7 +149,6 @@ function sendSessionDetailsToALl(ws: WS, session: DefaultSession) {
 
 function updateRoom(ws: WS, sessionId: string, message: ClientUpdateRoom) {
     const session = sessions.get(sessionId);
-    console.log(message);
     if (!session) {
         return;
     }
@@ -267,7 +266,6 @@ function updateRoomConnections(session: SessionDetails, x: number, y: number) {
 
 function addAdjacentRooms(session: SessionDetails, x: number, y: number) {
     const grid = session.grid;
-    console.log(session, x, y);
     if (x - 1 >= 0) {
         const northRoom = grid[x - 1][y];
         if (northRoom === RoomType.EMPTY) {
