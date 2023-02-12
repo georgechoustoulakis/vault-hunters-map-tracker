@@ -1,4 +1,4 @@
-import {SessionDetails, SessionInfo} from "./VaultSession";
+import {SessionDetails, SessionInfo} from "./Session";
 
 
 export interface ServerTokenMessage {

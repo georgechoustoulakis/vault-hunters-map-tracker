@@ -1,11 +1,12 @@
 import React, {useEffect, useState} from 'react';
 import './App.css';
 import useWebSocket, {ReadyState} from 'react-use-websocket';
-import {ClientMessage} from '../../server/src/ClientMessage'
-import {ServerMessage} from '../../server/src/ServerMessage'
-import {SessionDetails, SessionInfo} from '../../server/src/VaultSession'
+import {ClientMessage} from './common/ClientMessage'
+import {ServerMessage} from './common/ServerMessage'
+import {CenterDirection, SessionDetails, SessionInfo} from './common/Session'
 import {SessionTable} from "./components/SessionTable";
 import {CurrentSessionView} from "./components/CurrentSessionView";
+
 
 const WS_URL = 'ws://localhost:3001';
 
@@ -90,8 +91,18 @@ function App() {
         }
     }
 
-    const onCreateNewSession = () => {
-        sendClientMessage({type: 'create-session', token: token});
+    const onCreateNewSessionNorth = () => {
+        sendClientMessage({type: 'create-session', token: token, direction: CenterDirection.NORTH});
+    }
+
+    const onCreateNewSessionEast = () => {
+        sendClientMessage({type: 'create-session', token: token, direction: CenterDirection.EAST});
+    }
+    const onCreateNewSessionSouth = () => {
+        sendClientMessage({type: 'create-session', token: token, direction: CenterDirection.SOUTH});
+    }
+    const onCreateNewSessionWest = () => {
+        sendClientMessage({type: 'create-session', token: token, direction: CenterDirection.WEST});
     }
 
     const leaveSession = () => {
@@ -129,7 +140,17 @@ function App() {
                 {/* Session selection */}
                 {token !== '' && currentSession === undefined &&
                     <>
-                        <button onClick={onCreateNewSession}>Create New Session</button>
+                        <div>
+                            Create new session:
+                        </div>
+                        <div style={{display: 'flex', flexDirection: 'column'}}>
+                            <button onClick={onCreateNewSessionNorth}>north</button>
+                            <div style={{display: 'flex'}}>
+                                <button onClick={onCreateNewSessionEast}>east</button>
+                                <button onClick={onCreateNewSessionWest}>west</button>
+                            </div>
+                            <button onClick={onCreateNewSessionSouth}>south</button>
+                        </div>
                         <br/>
                         <SessionTable sessions={sessions} setSession={getSessionDetails}/>
                     </>

@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {SessionInfo} from '../../../server/src/VaultSession'
+import {SessionInfo} from '../common/Session'
 
 interface SessionTableProps {
     sessions: SessionInfo[];

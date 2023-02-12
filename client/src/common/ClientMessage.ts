@@ -1,5 +1,5 @@
-import {Room} from "./VaultSession";
 import {PlayerLocation} from "./Player";
+import {CenterDirection, Room, RoomType} from "./Session";
 
 interface AuthorizedClientMessage {
     token: string,
@@ -13,6 +13,7 @@ export interface ClientCreatePlayer {
 
 export interface ClientCreateSession extends AuthorizedClientMessage {
     type: 'create-session',
+    direction: CenterDirection,
 }
 
 export interface ClientSessionDetails extends AuthorizedClientMessage {
@@ -20,17 +21,12 @@ export interface ClientSessionDetails extends AuthorizedClientMessage {
     sessionId: string,
 }
 
-export interface ChangeRoom extends AuthorizedClientMessage {
+export interface ClientUpdateRoom extends AuthorizedClientMessage {
     type: 'session-update-room',
     sessionId: string,
-    room: Room
-}
-
-export interface AddRoom extends AuthorizedClientMessage {
-    type: 'session-add-room',
-    sessionId: string,
     x: number,
-    y: number
+    y: number,
+    roomType: RoomType
 }
 
 export interface ChangePlayerLocation extends AuthorizedClientMessage {
@@ -43,6 +39,5 @@ export type ClientMessage =
     ClientCreatePlayer
     | ClientCreateSession
     | ClientSessionDetails
-    | ChangeRoom
-    | AddRoom
+    | ClientUpdateRoom
     | ChangePlayerLocation;

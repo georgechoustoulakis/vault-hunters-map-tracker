@@ -1,9 +1,7 @@
 import React from 'react';
-import {Room, SessionDetails} from '../../../server/src/VaultSession'
-import {ClientMessage} from '../../../server/src/ClientMessage'
-import {TransformComponent, TransformWrapper} from "react-zoom-pan-pinch"
+import {SessionDetails} from '../common/Session'
+import {ClientMessage} from '../common/ClientMessage'
 import {RoomComponent} from "./RoomComponent";
-import {Empty} from "./Empty";
 
 interface CurrentSessionViewProps {
     currentSession: SessionDetails;
@@ -17,63 +15,77 @@ export function CurrentSessionView(props: CurrentSessionViewProps) {
     const {currentSession, leaveSession, sendMessage, token, name} = props;
 
     const size = currentSession.size;
-    const grid: (Room | undefined)[][] = new Array(size);
-    for (let i = 0; i < size; i++) {
-        grid[i] = new Array(size).fill(undefined);
-    }
-
-    for (const room of currentSession.rooms) {
-        grid[room.x][room.y] = room;
-    }
+    const grid = currentSession.grid;
 
     return (
-        <div style={{display: 'flex', flexDirection: 'column'}}>
-            <button onClick={leaveSession} style={{width: '150px', height: '30px', alignSelf: 'center'}}>
-                Leave Vault Session
-            </button>
-            <TransformWrapper
-                initialScale={2}
-                initialPositionX={-450}
-                initialPositionY={-500}>
-                {({zoomIn, zoomOut, resetTransform, ...rest}) => (
-                    <React.Fragment>
-                        <TransformComponent>
-                            <table id={'room-table'} style={{aspectRatio: 1, height: 'calc(100vh-30px)'}}>
-                                {
-                                    grid.map((row, xIndex) => (
-                                        <tr key={xIndex} className={'row'}>
-                                            {row.map((room, yIndex) =>
+        <>
+            <div style={{display: 'flex', flexDirection: 'column'}}>
+                <div style={{display: 'flex', justifyItems: 'center'}}>
+                    <button onClick={leaveSession}
+                            style={{
+                                width: '150px',
+                                height: '30px',
+                                alignSelf: 'center',
+                                backgroundColor: 'indianred'
+                            }}>Leave
+                        Vault Session
+                    </button>
+                    <button style={{
+                        width: '150px',
+                        height: '30px',
+                        alignSelf: 'center',
+                        backgroundColor: 'greenyellow'
+                    }}>Add Objective marker
+                    </button>
+                </div>
+            </div>
 
-                                                <th key={yIndex}>
-                                                    {
-                                                        room !== undefined ?
-                                                            <RoomComponent room={room}
-                                                                           sendMessage={sendMessage}
-                                                                           currentSession={currentSession}
-                                                                           token={token}
-                                                                           name={name}
-                                                                           sessionId={currentSession.id}/> :
-                                                            <Empty x={xIndex}
-                                                                   y={yIndex}
-                                                                   sessionId={currentSession.id}
-                                                                   sendMessage={sendMessage}
-                                                                   grid={grid}
-                                                                   token={token}
-                                                                   name={name}/>
-                                                    }
 
-                                                </th>)
-                                            }
-                                        </tr>
-                                    ))
+            <div style={{width: '100%', maxHeight: 'calc(100vh-30px)'}}>
+                <table id={'room-table'} style={{aspectRatio: 1}}>
+                    {
+                        grid.map((row, xIndex) => (
+                            <tr key={xIndex} className={'row'}>
+                                {row.map((room, yIndex) =>
+
+                                    <th key={yIndex}>
+                                        {
+                                            <RoomComponent
+                                                x={xIndex}
+                                                y={yIndex}
+                                                room={room}
+                                                sendMessage={sendMessage}
+                                                currentSession={currentSession}
+                                                token={token}
+                                                name={name}
+                                                sessionId={currentSession.id}
+                                            />
+                                        }
+
+                                    </th>)
                                 }
-                            </table>
-                        </TransformComponent>
-                    </React.Fragment>
-                )}
-            </TransformWrapper>
+                            </tr>
+                        ))
+                    }
+                </table>
+                {/*<TransformWrapper*/}
+                {/*    initialScale={2}*/}
+                {/*    initialPositionX={-450}*/}
+                {/*    initialPositionY={-500}*/}
+                {/*    onPanningStart={disableClicking}*/}
+                {/*    onPanningStop={enabledClicking}>*/}
+                {/*    {({zoomIn, zoomOut, resetTransform, ...rest}) => (*/}
+                {/*        <React.Fragment>*/}
+                {/*            <TransformComponent>*/}
+                {/*               */}
+                {/*            </TransformComponent>*/}
+                {/*        </React.Fragment>*/}
+                {/*    )}*/}
+                {/*</TransformWrapper>*/}
+            </div>
 
-        </div>
+        </>
+
 
     )
 }
