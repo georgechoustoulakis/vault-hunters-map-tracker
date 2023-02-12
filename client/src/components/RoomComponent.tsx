@@ -87,14 +87,12 @@ export function RoomComponent(props: RoomProps) {
         sendMessage({type: 'session-update-room', token, sessionId, x, y, roomType: RoomType.UNKNOWN});
     }
 
-    const isCenter = false;
-
     return (
         <>
             <div className="room-parent" title={playerNames}>
                 <div className="div1"
                      style={{
-                         backgroundColor: isCenter ? "indianred" : 'sandybrown',
+                         backgroundColor: room.type === RoomType.CENTER ? "indianred" : 'sandybrown',
                          borderStyle: isPlayer ? 'solid' : 'none'
                      }}
                      onClick={onClickCenter}
