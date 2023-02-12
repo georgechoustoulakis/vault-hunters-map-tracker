@@ -83,7 +83,6 @@ export function RoomComponent(props: RoomProps) {
         if (!isPlayerAllowedToMoveHere) {
             return console.log('not allowed to move here');
         }
-        console.log(isPlayerAllowedToMoveHere);
         sendMessage({type: 'session-change-player-location', token, sessionId, player: {name, x, y}})
     }
 

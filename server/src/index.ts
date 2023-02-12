@@ -191,7 +191,6 @@ function changePlayerLocation(ws: WS, message: ChangePlayerLocation) {
         return;
     }
     const room = session.grid[message.player.x][message.player.y];
-    console.log(room);
     if (room === RoomType.EMPTY) {
         return sendError(ws, 'Can\t move player into an empty void.');
     }
@@ -201,11 +200,8 @@ function changePlayerLocation(ws: WS, message: ChangePlayerLocation) {
         addAdjacentRooms(session, message.player.x, message.player.y);
         updateRoomConnections(session, message.player.x, message.player.y);
     }
-    console.log(message.player.name);
     session.players = session.players.filter((playerLocation) => playerLocation.name !== message.player.name);
-    console.log(message.player);
     session.players.push(message.player);
-    console.log(session.players);
 
     sendSessionDetailsToALl(ws, session);
 }
