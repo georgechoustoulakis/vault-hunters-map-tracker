@@ -1,7 +1,8 @@
 import React from 'react';
-import {CenterDirection, Room, RoomType, SessionDetails} from '../common/Session'
-import {ClientMessage} from '../common/ClientMessage'
-import {PlayerLocation} from "../common/Player";
+import {ClientMessage} from "../api/ClientMessage";
+import { PlayerLocation } from '../api/Player';
+import {CenterDirection, Room, RoomType, SessionDetails} from '../api/Session';
+
 
 
 interface RoomProps {

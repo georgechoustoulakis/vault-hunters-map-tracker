@@ -7,7 +7,7 @@ import {
     ClientMessage,
     ClientSessionDetails,
     ClientUpdateRoom
-} from "./common/ClientMessage";
+} from "@api/ClientMessage";
 import {
     ServerErrorMessage,
     ServerInfoMessage,
@@ -15,12 +15,13 @@ import {
     ServerSessionDetails,
     ServerTokenMessage,
     ServerUpdateMessage
-} from "./common/ServerMessage";
+} from "@api/ServerMessage";
 import {randomUUID} from "crypto";
 import {LocalStorage} from "node-localstorage";
-import {Player} from "./common/Player";
 import path from "path";
-import {BasicRoom, CenterDirection, CenterRoom, DefaultSession, RoomType, SessionDetails} from "./common/Session";
+import {BasicRoom, CenterDirection, CenterRoom, RoomType, SessionDetails} from "@api/Session";
+import {Player} from "@api/Player";
+import {DefaultSession} from "./DefaultSession";
 
 const PORT = process.env.PORT || 3001;
 

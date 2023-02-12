@@ -1,5 +1,4 @@
 import {PlayerLocation} from "./Player";
-import {randomUUID} from "crypto";
 
 export enum RoomType {
     UNKNOWN, // No info about where there is/isn't a room here
@@ -48,21 +47,5 @@ export interface SessionDetails extends SessionInfo {
     readonly size: number;
     players: PlayerLocation[];
     grid: Room[][];
-}
-
-
-export class DefaultSession implements SessionDetails {
-    readonly id = randomUUID();
-    readonly size: number = 21;
-    readonly time = new Date();
-    players: PlayerLocation[] = [];
-    grid: Room[][];
-
-    constructor() {
-        this.grid = new Array(this.size).fill(undefined);
-        for (let i = 0; i < this.size; i++) {
-            this.grid[i] = new Array(this.size).fill(RoomType.EMPTY);
-        }
-    }
 }
 

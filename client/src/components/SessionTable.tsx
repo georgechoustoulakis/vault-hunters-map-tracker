@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {SessionInfo} from '../common/Session'
+import {SessionInfo} from "../api/Session";
 
 interface SessionTableProps {
     sessions: SessionInfo[];

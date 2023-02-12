@@ -1,6 +1,6 @@
 import React from 'react';
-import {SessionDetails} from '../common/Session'
-import {ClientMessage} from '../common/ClientMessage'
+import {SessionDetails} from '../api/Session'
+import {ClientMessage} from '../api/ClientMessage'
 import {RoomComponent} from "./RoomComponent";
 import {TransformComponent, TransformWrapper} from 'react-zoom-pan-pinch';
 

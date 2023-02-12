@@ -1,9 +1,9 @@
 import React, {useEffect, useState} from 'react';
 import './App.css';
 import useWebSocket, {ReadyState} from 'react-use-websocket';
-import {ClientMessage} from './common/ClientMessage'
-import {ServerMessage} from './common/ServerMessage'
-import {CenterDirection, SessionDetails, SessionInfo} from './common/Session'
+import {ClientMessage} from './api/ClientMessage'
+import {ServerMessage} from './api/ServerMessage'
+import {CenterDirection, SessionDetails, SessionInfo} from './api/Session'
 import {SessionTable} from "./components/SessionTable";
 import {CurrentSessionView} from "./components/CurrentSessionView";
 
