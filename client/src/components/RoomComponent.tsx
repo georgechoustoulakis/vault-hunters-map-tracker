@@ -1,6 +1,7 @@
 import React from 'react';
 import {CenterDirection, Room, RoomType, SessionDetails} from '../common/Session'
 import {ClientMessage} from '../common/ClientMessage'
+import {PlayerLocation} from "../common/Player";
 
 
 interface RoomProps {
@@ -12,10 +13,11 @@ interface RoomProps {
     token: string;
     name: string;
     sessionId: string;
+    playerLocation: PlayerLocation;
 }
 
 export function RoomComponent(props: RoomProps) {
-    const {room, sendMessage, currentSession, sessionId, token, name, x, y} = props;
+    const {room, sendMessage, currentSession, sessionId, token, name, x, y, playerLocation} = props;
 
     if (room === RoomType.EMPTY) {
         // EMPTY rooms can be turned back into UNKNOWN if you make a mistake.
@@ -32,9 +34,14 @@ export function RoomComponent(props: RoomProps) {
         )
     }
 
+    const isPlayerAllowedToMoveHere = Math.abs(playerLocation.x - x) + Math.abs(playerLocation.y - y) <= 1;
+
     if (room.type === RoomType.UNKNOWN) {
         // Player can travel to unknown rooms to turn them into normal rooms.
         const onClick = () => {
+            if (!isPlayerAllowedToMoveHere) {
+                return console.log('not allowed to move here');
+            }
             sendMessage({type: 'session-change-player-location', token, sessionId, player: {name, x, y}})
         }
         // Right click to turn into empty,
@@ -64,8 +71,8 @@ export function RoomComponent(props: RoomProps) {
     }
 
     const playerInThisRoom = currentSession.players.filter((playerLocation) => playerLocation.x === x && playerLocation.y === y)
-    const isPlayer = playerInThisRoom.find((playerLocation) => playerLocation.name === name)
     const playerNames = playerInThisRoom.map((player) => player.name).join()
+    const isPlayer = playerLocation.x === x && playerLocation.y === y;
 
     const west: boolean = room.type === RoomType.CENTER ? room.direction === CenterDirection.WEST : room.west;
     const north: boolean = room.type === RoomType.CENTER ? room.direction === CenterDirection.NORTH : room.north;
@@ -73,6 +80,10 @@ export function RoomComponent(props: RoomProps) {
     const south: boolean = room.type === RoomType.CENTER ? room.direction === CenterDirection.SOUTH : room.south;
 
     const onClickCenter = () => {
+        if (!isPlayerAllowedToMoveHere) {
+            return console.log('not allowed to move here');
+        }
+        console.log(isPlayerAllowedToMoveHere);
         sendMessage({type: 'session-change-player-location', token, sessionId, player: {name, x, y}})
     }
 

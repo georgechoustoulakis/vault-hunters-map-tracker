@@ -2,6 +2,7 @@ import React from 'react';
 import {SessionDetails} from '../common/Session'
 import {ClientMessage} from '../common/ClientMessage'
 import {RoomComponent} from "./RoomComponent";
+import {TransformComponent, TransformWrapper} from 'react-zoom-pan-pinch';
 
 interface CurrentSessionViewProps {
     currentSession: SessionDetails;
@@ -16,6 +17,8 @@ export function CurrentSessionView(props: CurrentSessionViewProps) {
 
     const size = currentSession.size;
     const grid = currentSession.grid;
+
+    const playerLocation = currentSession.players.find((location) => location.name === name)!;
 
     return (
         <>
@@ -42,46 +45,45 @@ export function CurrentSessionView(props: CurrentSessionViewProps) {
 
 
             <div style={{width: '100%', maxHeight: 'calc(100vh-30px)'}}>
-                <table id={'room-table'} style={{aspectRatio: 1}}>
-                    {
-                        grid.map((row, xIndex) => (
-                            <tr key={xIndex} className={'row'}>
-                                {row.map((room, yIndex) =>
 
-                                    <th key={yIndex}>
-                                        {
-                                            <RoomComponent
-                                                x={xIndex}
-                                                y={yIndex}
-                                                room={room}
-                                                sendMessage={sendMessage}
-                                                currentSession={currentSession}
-                                                token={token}
-                                                name={name}
-                                                sessionId={currentSession.id}
-                                            />
-                                        }
+                <TransformWrapper
+                    initialScale={2}
+                    initialPositionX={-450}
+                    initialPositionY={-500}>
+                    {({zoomIn, zoomOut, resetTransform, ...rest}) => (
+                        <React.Fragment>
+                            <TransformComponent>
+                                <table id={'room-table'} style={{aspectRatio: 1}}>
+                                    {
+                                        grid.map((row, xIndex) => (
+                                            <tr key={xIndex} className={'row'}>
+                                                {row.map((room, yIndex) =>
 
-                                    </th>)
-                                }
-                            </tr>
-                        ))
-                    }
-                </table>
-                {/*<TransformWrapper*/}
-                {/*    initialScale={2}*/}
-                {/*    initialPositionX={-450}*/}
-                {/*    initialPositionY={-500}*/}
-                {/*    onPanningStart={disableClicking}*/}
-                {/*    onPanningStop={enabledClicking}>*/}
-                {/*    {({zoomIn, zoomOut, resetTransform, ...rest}) => (*/}
-                {/*        <React.Fragment>*/}
-                {/*            <TransformComponent>*/}
-                {/*               */}
-                {/*            </TransformComponent>*/}
-                {/*        </React.Fragment>*/}
-                {/*    )}*/}
-                {/*</TransformWrapper>*/}
+                                                    <th key={yIndex}>
+                                                        {
+                                                            <RoomComponent
+                                                                x={xIndex}
+                                                                y={yIndex}
+                                                                room={room}
+                                                                sendMessage={sendMessage}
+                                                                currentSession={currentSession}
+                                                                token={token}
+                                                                name={name}
+                                                                sessionId={currentSession.id}
+                                                                playerLocation={playerLocation}
+                                                            />
+                                                        }
+
+                                                    </th>)
+                                                }
+                                            </tr>
+                                        ))
+                                    }
+                                </table>
+                            </TransformComponent>
+                        </React.Fragment>
+                    )}
+                </TransformWrapper>
             </div>
 
         </>
