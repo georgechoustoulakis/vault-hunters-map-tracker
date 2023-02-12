@@ -30,6 +30,12 @@ const storage = new LocalStorage('./storage');
 const players: Player[] = JSON.parse(storage.getItem('players') ?? '[]');
 console.log(players);
 
+setInterval(() => {
+    wss.clients.forEach((ws: WS) => {
+        ws.ping();
+    });
+}, 20000)
+
 wss.on('connection', (ws: WS) => {
     ws.on('message', (message: string) => {
         let json: ClientMessage;
@@ -40,6 +46,9 @@ wss.on('connection', (ws: WS) => {
         }
         handleClientMessage(ws, json);
     });
+    ws.on("pong", (ws: WS) => {
+        // console.log('pong');
+    })
     sendMessage(ws, updateMessage());
 });
 
