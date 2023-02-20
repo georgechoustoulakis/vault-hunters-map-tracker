@@ -8,7 +8,7 @@ interface SessionTableProps {
 
 export function SessionTable(props: SessionTableProps) {
     const {sessions, setSession} = props;
-    const [_, setTime] = useState(new Date());
+    const [time, setTime] = useState(new Date());
 
     // re-render every second to update availabilities
     useEffect(() => {
@@ -33,7 +33,7 @@ export function SessionTable(props: SessionTableProps) {
                     }
                     const creationDate = new Date(session.time);
                     const expireTime = new Date(creationDate.getTime() + 25 * 60000)
-                    const expired = expireTime.getTime() < new Date().getTime();
+                    const expired = expireTime.getTime() < time.getTime();
                     return (
                         <div className="row" key={index}
                              style={{backgroundColor: expired ? 'rgba(255, 0, 0, 0.3)' : 'rgba(0, 255, 0, 0.3)'}}>
