@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {FormEvent, useEffect, useState} from 'react';
 import './App.css';
 import useWebSocket, {ReadyState} from 'react-use-websocket';
 import {ClientMessage} from './api/ClientMessage'
@@ -73,7 +73,8 @@ function App() {
         alert(error);
     }
 
-    const onSubmitName = () => {
+    const onSubmitName = (e: FormEvent) => {
+        e.preventDefault();
         const newName = (document.getElementById('name-input')! as HTMLInputElement).value;
         if (newName === '') {
             return onError('Enter a valid name.')
@@ -120,12 +121,13 @@ function App() {
             <header className="App-header">
                 {token === '' &&
                     <div className="login-div">
-                        <label>Enter your name:</label>
-                        <br/>
-                        <input type="text" id='name-input'></input>
-                        <br/>
-                        <button onClick={onSubmitName}>Enter</button>
-                        <br/>
+                        <form onSubmit={onSubmitName}>
+                            <label htmlFor="fname">Enter your name:</label>
+                            <br/>
+                            <input type="text" id="name-input" name="fname"/>
+                            <br/>
+                            <input type="submit" value="Enter"/>
+                        </form>
 
                     </div>}
                 {/* Session selection */}
