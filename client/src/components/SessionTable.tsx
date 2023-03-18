@@ -1,5 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {SessionInfo} from "../api/Session";
+import {Button} from "@mui/material";
+import {buttonStyle} from "../App";
 
 interface SessionTableProps {
     sessions: SessionInfo[];
@@ -20,7 +22,7 @@ export function SessionTable(props: SessionTableProps) {
     }, []);
 
     return (
-        <div>
+        <div style={{width: '80%'}}>
             <section id={'sessions-table'}>
                 <header>
                     <div className="col">Creation time</div>
@@ -39,7 +41,8 @@ export function SessionTable(props: SessionTableProps) {
                              style={{backgroundColor: expired ? 'rgba(255, 0, 0, 0.3)' : 'rgba(0, 255, 0, 0.3)'}}>
                             <div className="col">{new Date(session.time).toISOString()}</div>
                             <div className="col">
-                                <button onClick={setCurrentSession}>Join Session</button>
+                                <Button style={{...buttonStyle, width: 150}} variant="contained"
+                                        onClick={setCurrentSession}>Join Session</Button>
                             </div>
                         </div>)
                 })

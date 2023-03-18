@@ -6,6 +6,7 @@ import {ServerMessage} from './api/ServerMessage'
 import {CenterDirection, SessionDetails, SessionInfo} from './api/Session'
 import {SessionTable} from "./components/SessionTable";
 import {CurrentSessionView} from "./components/CurrentSessionView";
+import {Button} from "@mui/material";
 
 
 let WS_URL = document.location.origin
@@ -17,6 +18,8 @@ const NAME_KEY = 'vault-hunters-map-tracker-name-key';
 const storedToken = localStorage.getItem(TOKEN_KEY) ?? '';
 const storedName = localStorage.getItem(NAME_KEY) ?? '';
 
+export const buttonStyle: React.CSSProperties = {margin: 5, width: 100, alignSelf: 'center'};
+
 function App() {
     const [name, setName] = useState<string>(storedName);
     const [token, setToken] = useState<string>(storedToken);
@@ -24,7 +27,6 @@ function App() {
     const [currentSession, setCurrentSession] = useState<string | undefined>(undefined);
     const [currentSessionDetails, setCurrentSessionDetails] = useState<SessionDetails | undefined>(undefined);
     const {sendMessage, lastMessage, readyState} = useWebSocket(WS_URL);
-
     useEffect(() => {
         if (lastMessage !== null) {
             try {
@@ -139,12 +141,16 @@ function App() {
                             Create new session:
                         </div>
                         <div style={{display: 'flex', flexDirection: 'column'}}>
-                            <button onClick={onCreateNewSessionNorth}>north</button>
+                            <Button style={buttonStyle} variant="contained"
+                                    onClick={onCreateNewSessionNorth}>north</Button>
                             <div style={{display: 'flex'}}>
-                                <button onClick={onCreateNewSessionEast}>east</button>
-                                <button onClick={onCreateNewSessionWest}>west</button>
+                                <Button style={buttonStyle} variant="contained"
+                                        onClick={onCreateNewSessionEast}>east</Button>
+                                <Button style={buttonStyle} variant="contained"
+                                        onClick={onCreateNewSessionWest}>west</Button>
                             </div>
-                            <button onClick={onCreateNewSessionSouth}>south</button>
+                            <Button style={buttonStyle} variant="contained"
+                                    onClick={onCreateNewSessionSouth}>south</Button>
                         </div>
                         <br/>
                         <SessionTable sessions={sessions} setSession={getSessionDetails}/>

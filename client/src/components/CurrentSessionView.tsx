@@ -3,6 +3,8 @@ import {SessionDetails} from '../api/Session'
 import {ClientMessage} from '../api/ClientMessage'
 import {RoomComponent} from "./RoomComponent";
 import {TransformComponent, TransformWrapper} from 'react-zoom-pan-pinch';
+import {buttonStyle} from "../App";
+import {Button} from "@mui/material";
 
 interface CurrentSessionViewProps {
     currentSession: SessionDetails;
@@ -24,22 +26,17 @@ export function CurrentSessionView(props: CurrentSessionViewProps) {
         <>
             <div style={{display: 'flex', flexDirection: 'column'}}>
                 <div style={{display: 'flex', justifyItems: 'center'}}>
-                    <button onClick={leaveSession}
-                            style={{
-                                width: '150px',
-                                height: '30px',
-                                alignSelf: 'center',
-                                backgroundColor: 'indianred'
-                            }}>Leave
-                        Vault Session
-                    </button>
-                    <button style={{
-                        width: '150px',
-                        height: '30px',
-                        alignSelf: 'center',
-                        backgroundColor: 'greenyellow'
-                    }}>Add Objective marker
-                    </button>
+                    <Button
+                        style={{...buttonStyle, width: 250, backgroundColor: 'indianred'}}
+                        variant="contained"
+                        onClick={leaveSession}>
+                        Leave Vault Session
+                    </Button>
+                    <Button
+                        style={{...buttonStyle, width: 250, backgroundColor: 'green'}}
+                        variant="contained"
+                    >Add Objective marker
+                    </Button>
                 </div>
             </div>
 
