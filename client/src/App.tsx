@@ -110,7 +110,7 @@ function App() {
                     justifyItems: 'center'
                 }}>
                     <AppBar position="static">
-                        <Toolbar>
+                        <Toolbar sx={{backgroundColor: readyState === ReadyState.CLOSED ? 'red' : undefined}}>
                             <Typography variant="h6" component="div" sx={{flexGrow: 1}}>
                                 Connection status: {connectionStatus}
                             </Typography>
