@@ -49,6 +49,7 @@ export function CurrentSessionView(props: CurrentSessionViewProps) {
                         <React.Fragment>
                             <TransformComponent>
                                 <table id={'room-table'} style={{aspectRatio: 1}}>
+                                    <tbody>
                                     {
                                         grid.map((row, xIndex) => (
                                             <tr key={xIndex} className={'row'}>
@@ -74,6 +75,7 @@ export function CurrentSessionView(props: CurrentSessionViewProps) {
                                             </tr>
                                         ))
                                     }
+                                    </tbody>
                                 </table>
                             </TransformComponent>
                         </React.Fragment>
