@@ -6,7 +6,7 @@ import {ServerMessage} from './api/ServerMessage'
 import {CenterDirection, SessionDetails, SessionInfo} from './api/Session'
 import {SessionTable} from "./components/SessionTable";
 import {CurrentSessionView} from "./components/CurrentSessionView";
-import {AppBar, Box, Button, IconButton, Toolbar, Typography} from "@mui/material";
+import {AppBar, Box, Button, InputLabel, TextField, Toolbar, Typography} from "@mui/material";
 
 
 let WS_URL = document.location.origin
@@ -123,24 +123,36 @@ function App() {
     return (
         <div className="App">
             <header className="App-header">
-                <Box sx={{ width: '100%', display: 'flex', flexDirection: 'column', flexGrow: 1, alignItems: 'center', justifyItems: 'center' }}>
+                <Box sx={{
+                    width: '100%',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    flexGrow: 1,
+                    alignItems: 'center',
+                    justifyItems: 'center'
+                }}>
                     <AppBar position="static">
                         <Toolbar>
-                            <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+                            <Typography variant="h6" component="div" sx={{flexGrow: 1}}>
                                 Connection status: {connectionStatus}
                             </Typography>
                             <Button color="inherit">User: {name}</Button>
                         </Toolbar>
                     </AppBar>
-                    <div style={{ width: '90%', marginTop: 20}}>
+                    <div style={{width: '90%', marginTop: 20}}>
                         {token === '' &&
                             <div className="login-div">
                                 <form onSubmit={onSubmitName}>
-                                    <label htmlFor="fname">Enter your name:</label>
-                                    <br/>
-                                    <input type="text" id="name-input" name="fname"/>
-                                    <br/>
-                                    <input type="submit" value="Enter"/>
+                                    <InputLabel style={{color: 'white'}} htmlFor="name-input">Enter your
+                                        name:</InputLabel>
+                                    <TextField
+                                        required
+                                        id="name-input"
+                                        label="Required"
+                                        color={'primary'}
+                                        variant="filled"
+                                        style={{marginTop: 10,}}
+                                    />
                                 </form>
 
                             </div>}
