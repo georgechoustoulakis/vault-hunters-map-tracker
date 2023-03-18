@@ -3,8 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "initialize": " cd client && npm i && cd ../server && npm i",
-    "start-client": "cd client && npm start",
-    "start-server": "node server/src/index.ts"
+    "install": " cd client && npm i && cd ../server && npm i",
+    "build": "cd client && npm run build && cd ../server && npm run build",
+    "start": "node server/dist/index.js"
   }
 }
