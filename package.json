@@ -1,7 +1,8 @@
 {
   "name": "vault-hunters-map-tracker",
   "version": "0.1.0",
-  "private": true,
+  "author": "George Choustoulakis",
+  "license": "MIT",
   "scripts": {
     "install": " cd client && npm i && cd ../server && npm i",
     "build": "cd client && npm run build && cd ../server && npm run build",
