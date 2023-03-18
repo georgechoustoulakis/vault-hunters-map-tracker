@@ -3,11 +3,12 @@ import './App.css';
 import useWebSocket, {ReadyState} from 'react-use-websocket';
 import {ClientMessage} from './api/ClientMessage'
 import {ServerMessage} from './api/ServerMessage'
-import {CenterDirection, SessionDetails, SessionInfo} from './api/Session'
+import {SessionDetails, SessionInfo} from './api/Session'
 import {SessionTable} from "./components/SessionTable";
 import {CurrentSessionView} from "./components/CurrentSessionView";
 import {AppBar, Box, Button, Toolbar, Typography} from "@mui/material";
 import {RegisterUserView} from "./components/RegisterUserView";
+import {CreateSessionView} from "./components/CreateSessionView";
 
 
 let WS_URL = document.location.origin
@@ -78,20 +79,6 @@ function App() {
         alert(error);
     }
 
-    const onCreateNewSessionNorth = () => {
-        sendClientMessage({type: 'create-session', token: token, direction: CenterDirection.NORTH});
-    }
-
-    const onCreateNewSessionWest = () => {
-        sendClientMessage({type: 'create-session', token: token, direction: CenterDirection.EAST}); // TODO: east/west is flipped
-    }
-    const onCreateNewSessionSouth = () => {
-        sendClientMessage({type: 'create-session', token: token, direction: CenterDirection.SOUTH});
-    }
-    const onCreateNewSessionEast = () => {
-        sendClientMessage({type: 'create-session', token: token, direction: CenterDirection.WEST}); // TODO: east/west is flipped
-    }
-
     const leaveSession = () => {
         setCurrentSession(undefined);
         setCurrentSessionDetails(undefined)
@@ -138,25 +125,9 @@ function App() {
                         {/* Session selection */}
                         {token !== '' && currentSession === undefined &&
                             <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
-                                <div>
-                                    Create new session:
-                                </div>
-                                <div style={{display: 'flex', flexDirection: 'column'}}>
-                                    <Button style={buttonStyle} variant="contained"
-                                            onClick={onCreateNewSessionNorth}>north</Button>
-                                    <div style={{display: 'flex', justifyContent: 'center'}}>
-                                        <Button style={buttonStyle} variant="contained"
-                                                onClick={onCreateNewSessionWest}>west</Button>
-                                        <Button style={buttonStyle} variant="contained"
-                                                onClick={onCreateNewSessionEast}>east</Button>
-                                    </div>
-                                    <Button style={buttonStyle} variant="contained"
-                                            onClick={onCreateNewSessionSouth}>south</Button>
-                                </div>
-                                <br/>
+                                <CreateSessionView sendMessage={sendClientMessage} token={token}/>
                                 <SessionTable sessions={sessions} setSession={getSessionDetails}/>
                             </div>
-
                         }
                         {currentSession !== undefined && currentSessionDetails !== undefined &&
                             <CurrentSessionView

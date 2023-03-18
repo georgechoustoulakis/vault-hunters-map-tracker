@@ -54,7 +54,7 @@ export function SessionTable(props: SessionTableProps) {
     }, []);
 
     return (
-        <div style={{justifySelf: 'center', width: '100%', maxWidth: 600}}>
+        <div style={{justifySelf: 'center', width: '100%', maxWidth: 600, marginTop: 10}}>
             <TableContainer component={Paper}>
                 <Table aria-label="customized table">
                     <TableHead>
