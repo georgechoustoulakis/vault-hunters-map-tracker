@@ -146,7 +146,7 @@ function App() {
                             </div>}
                         {/* Session selection */}
                         {token !== '' && currentSession === undefined &&
-                            <div>
+                            <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
                                 <div>
                                     Create new session:
                                 </div>
