@@ -91,14 +91,14 @@ function App() {
         sendClientMessage({type: 'create-session', token: token, direction: CenterDirection.NORTH});
     }
 
-    const onCreateNewSessionEast = () => {
-        sendClientMessage({type: 'create-session', token: token, direction: CenterDirection.EAST});
+    const onCreateNewSessionWest = () => {
+        sendClientMessage({type: 'create-session', token: token, direction: CenterDirection.EAST}); // TODO: east/west is flipped
     }
     const onCreateNewSessionSouth = () => {
         sendClientMessage({type: 'create-session', token: token, direction: CenterDirection.SOUTH});
     }
-    const onCreateNewSessionWest = () => {
-        sendClientMessage({type: 'create-session', token: token, direction: CenterDirection.WEST});
+    const onCreateNewSessionEast = () => {
+        sendClientMessage({type: 'create-session', token: token, direction: CenterDirection.WEST}); // TODO: east/west is flipped
     }
 
     const leaveSession = () => {
@@ -155,9 +155,9 @@ function App() {
                                             onClick={onCreateNewSessionNorth}>north</Button>
                                     <div style={{display: 'flex', justifyContent: 'center'}}>
                                         <Button style={buttonStyle} variant="contained"
-                                                onClick={onCreateNewSessionEast}>east</Button>
-                                        <Button style={buttonStyle} variant="contained"
                                                 onClick={onCreateNewSessionWest}>west</Button>
+                                        <Button style={buttonStyle} variant="contained"
+                                                onClick={onCreateNewSessionEast}>east</Button>
                                     </div>
                                     <Button style={buttonStyle} variant="contained"
                                             onClick={onCreateNewSessionSouth}>south</Button>
