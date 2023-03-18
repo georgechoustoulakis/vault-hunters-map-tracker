@@ -24,20 +24,18 @@ export function CurrentSessionView(props: CurrentSessionViewProps) {
 
     return (
         <>
-            <div style={{display: 'flex', flexDirection: 'column'}}>
-                <div style={{display: 'flex', justifyItems: 'center'}}>
-                    <Button
-                        style={{...buttonStyle, width: 250, backgroundColor: 'indianred'}}
-                        variant="contained"
-                        onClick={leaveSession}>
-                        Leave Vault Session
-                    </Button>
-                    <Button
-                        style={{...buttonStyle, width: 250, backgroundColor: 'green'}}
-                        variant="contained"
-                    >Add Objective marker
-                    </Button>
-                </div>
+            <div style={{display: 'flex', justifyContent: 'center', flexDirection: 'row'}}>
+                <Button
+                    style={{...buttonStyle, width: 250, backgroundColor: 'indianred'}}
+                    variant="contained"
+                    onClick={leaveSession}>
+                    Leave Vault Session
+                </Button>
+                <Button
+                    style={{...buttonStyle, width: 250, backgroundColor: 'green'}}
+                    variant="contained"
+                >Add Objective marker
+                </Button>
             </div>
 
 
