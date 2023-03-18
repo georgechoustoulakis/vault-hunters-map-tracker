@@ -1,4 +1,4 @@
-import React, {FormEvent, useEffect, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import './App.css';
 import useWebSocket, {ReadyState} from 'react-use-websocket';
 import {ClientMessage} from './api/ClientMessage'
@@ -6,7 +6,8 @@ import {ServerMessage} from './api/ServerMessage'
 import {CenterDirection, SessionDetails, SessionInfo} from './api/Session'
 import {SessionTable} from "./components/SessionTable";
 import {CurrentSessionView} from "./components/CurrentSessionView";
-import {AppBar, Box, Button, InputLabel, TextField, Toolbar, Typography} from "@mui/material";
+import {AppBar, Box, Button, Toolbar, Typography} from "@mui/material";
+import {RegisterUserView} from "./components/RegisterUserView";
 
 
 let WS_URL = document.location.origin
@@ -77,16 +78,6 @@ function App() {
         alert(error);
     }
 
-    const onSubmitName = (e: FormEvent) => {
-        e.preventDefault();
-        const newName = (document.getElementById('name-input')! as HTMLInputElement).value;
-        if (newName === '') {
-            return onError('Enter a valid name.')
-        } else {
-            sendClientMessage({type: 'create-player', name: newName, token: token});
-        }
-    }
-
     const onCreateNewSessionNorth = () => {
         sendClientMessage({type: 'create-session', token: token, direction: CenterDirection.NORTH});
     }
@@ -141,21 +132,9 @@ function App() {
                     </AppBar>
                     <div style={{width: '90%', marginTop: 20}}>
                         {token === '' &&
-                            <div className="login-div">
-                                <form onSubmit={onSubmitName}>
-                                    <InputLabel style={{color: 'white'}} htmlFor="name-input">Enter your
-                                        name:</InputLabel>
-                                    <TextField
-                                        required
-                                        id="name-input"
-                                        label="Required"
-                                        color={'primary'}
-                                        variant="filled"
-                                        style={{marginTop: 10,}}
-                                    />
-                                </form>
+                            <RegisterUserView sendMessage={sendClientMessage} onError={onError} token={token}/>
+                        }
 
-                            </div>}
                         {/* Session selection */}
                         {token !== '' && currentSession === undefined &&
                             <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
