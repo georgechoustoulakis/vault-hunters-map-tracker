@@ -22,7 +22,7 @@ export function SessionTable(props: SessionTableProps) {
     }, []);
 
     return (
-        <div style={{width: '80%'}}>
+        <div style={{width: '100%'}}>
             <section id={'sessions-table'}>
                 <header>
                     <div className="col">Creation time</div>

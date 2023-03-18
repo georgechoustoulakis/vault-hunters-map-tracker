@@ -6,7 +6,7 @@ import {ServerMessage} from './api/ServerMessage'
 import {CenterDirection, SessionDetails, SessionInfo} from './api/Session'
 import {SessionTable} from "./components/SessionTable";
 import {CurrentSessionView} from "./components/CurrentSessionView";
-import {Button} from "@mui/material";
+import {AppBar, Box, Button, IconButton, Toolbar, Typography} from "@mui/material";
 
 
 let WS_URL = document.location.origin
@@ -113,7 +113,7 @@ function App() {
 
     const connectionStatus = {
         [ReadyState.CONNECTING]: 'Connecting',
-        [ReadyState.OPEN]: 'Open',
+        [ReadyState.OPEN]: 'Connected',
         [ReadyState.CLOSING]: 'Closing',
         [ReadyState.CLOSED]: 'Closed',
         [ReadyState.UNINSTANTIATED]: 'Uninstantiated',
@@ -123,48 +123,62 @@ function App() {
     return (
         <div className="App">
             <header className="App-header">
-                {token === '' &&
-                    <div className="login-div">
-                        <form onSubmit={onSubmitName}>
-                            <label htmlFor="fname">Enter your name:</label>
-                            <br/>
-                            <input type="text" id="name-input" name="fname"/>
-                            <br/>
-                            <input type="submit" value="Enter"/>
-                        </form>
+                <Box sx={{ width: '100%', display: 'flex', flexDirection: 'column', flexGrow: 1, alignItems: 'center', justifyItems: 'center' }}>
+                    <AppBar position="static">
+                        <Toolbar>
+                            <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+                                Connection status: {connectionStatus}
+                            </Typography>
+                            <Button color="inherit">User: {name}</Button>
+                        </Toolbar>
+                    </AppBar>
+                    <div style={{ width: '90%', marginTop: 20}}>
+                        {token === '' &&
+                            <div className="login-div">
+                                <form onSubmit={onSubmitName}>
+                                    <label htmlFor="fname">Enter your name:</label>
+                                    <br/>
+                                    <input type="text" id="name-input" name="fname"/>
+                                    <br/>
+                                    <input type="submit" value="Enter"/>
+                                </form>
 
-                    </div>}
-                {/* Session selection */}
-                {token !== '' && currentSession === undefined &&
-                    <>
-                        <div>
-                            Create new session:
-                        </div>
-                        <div style={{display: 'flex', flexDirection: 'column'}}>
-                            <Button style={buttonStyle} variant="contained"
-                                    onClick={onCreateNewSessionNorth}>north</Button>
-                            <div style={{display: 'flex'}}>
-                                <Button style={buttonStyle} variant="contained"
-                                        onClick={onCreateNewSessionEast}>east</Button>
-                                <Button style={buttonStyle} variant="contained"
-                                        onClick={onCreateNewSessionWest}>west</Button>
+                            </div>}
+                        {/* Session selection */}
+                        {token !== '' && currentSession === undefined &&
+                            <div>
+                                <div>
+                                    Create new session:
+                                </div>
+                                <div style={{display: 'flex', flexDirection: 'column'}}>
+                                    <Button style={buttonStyle} variant="contained"
+                                            onClick={onCreateNewSessionNorth}>north</Button>
+                                    <div style={{display: 'flex', justifyContent: 'center'}}>
+                                        <Button style={buttonStyle} variant="contained"
+                                                onClick={onCreateNewSessionEast}>east</Button>
+                                        <Button style={buttonStyle} variant="contained"
+                                                onClick={onCreateNewSessionWest}>west</Button>
+                                    </div>
+                                    <Button style={buttonStyle} variant="contained"
+                                            onClick={onCreateNewSessionSouth}>south</Button>
+                                </div>
+                                <br/>
+                                <SessionTable sessions={sessions} setSession={getSessionDetails}/>
                             </div>
-                            <Button style={buttonStyle} variant="contained"
-                                    onClick={onCreateNewSessionSouth}>south</Button>
-                        </div>
-                        <br/>
-                        <SessionTable sessions={sessions} setSession={getSessionDetails}/>
-                    </>
 
-                }
-                {currentSession !== undefined && currentSessionDetails !== undefined &&
-                    <CurrentSessionView
-                        currentSession={currentSessionDetails}
-                        leaveSession={leaveSession}
-                        sendMessage={sendClientMessage}
-                        token={token}
-                        name={name}/>
-                }
+                        }
+                        {currentSession !== undefined && currentSessionDetails !== undefined &&
+                            <CurrentSessionView
+                                currentSession={currentSessionDetails}
+                                leaveSession={leaveSession}
+                                sendMessage={sendClientMessage}
+                                token={token}
+                                name={name}/>
+                        }
+                    </div>
+
+                </Box>
+
             </header>
         </div>
     );
