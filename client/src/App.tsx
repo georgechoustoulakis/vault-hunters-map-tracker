@@ -8,7 +8,9 @@ import {SessionTable} from "./components/SessionTable";
 import {CurrentSessionView} from "./components/CurrentSessionView";
 
 
-const WS_URL = 'ws://localhost:3001';
+let WS_URL = document.location.origin
+    .replace('http://', 'ws://')
+    .replace('https://', 'wss://');
 
 const TOKEN_KEY = 'vault-hunters-map-tracker-token-key';
 const NAME_KEY = 'vault-hunters-map-tracker-name-key';
